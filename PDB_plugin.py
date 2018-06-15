@@ -1021,7 +1021,6 @@ def PDBe_startup(pdbid, method, mmCIF_file=None, file_path=None):
         print("please provide a 4 letter PDB code")
 
 
-
 def __init__(self):
     try:
         # Simply add the menu entry and callback
@@ -1045,8 +1044,8 @@ def __init__(self):
         logging.error('unable to make menu items')
         logging.error(e)
 
-def PDBeLoaderDialog(app):
 
+def PDBeLoaderDialog(app):
     import tkSimpleDialog
     pdbCode = tkSimpleDialog.askstring('PDB Loader Service',
                                        'Highlight chemically distinct molecules, domains and assemblies in a PDB entry. Please enter a 4-digit pdb code:',
@@ -1084,8 +1083,6 @@ def PDBeAssemblyDialog(app):
                                        'Display assemblies for a PDB entry. Please enter a 4-digit pdb code:',
                                        parent=app.root)
     PDBe_startup(pdbCode, "show_assembly")
-
-
 
 
 def PDBe_entities(pdbid):
