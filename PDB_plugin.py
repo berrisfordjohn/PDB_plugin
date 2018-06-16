@@ -814,9 +814,6 @@ def mapping(pdbid):
                             # logging.debug(domain)
                             for mapping in data[pdbid][domain_type][domain]['mappings']:
                                 unobs = False
-                                PDBstart = ""
-                                PDBend = ""
-                                domain_segment_id = ""
                                 domain_name = ""
                                 # check segment id
                                 if 'segment_id' in mapping:
@@ -871,7 +868,7 @@ def domains(pdbid):
 
                         asym_list.append(asym_id)
                         entity_list.append(entity_id)
-                        chain_dict.update({asym_id: {'chain': chain, 'entity_id': entity_id}})
+                        # chain_dict.update({asym_id: {'chain': chain, 'entity_id': entity_id}})
 
                         selection = "chain %s and resi %s-%s and %s" % (chain, PDBstart, PDBend, pdbid)
                         object_selection.append(selection)
@@ -889,18 +886,6 @@ def domains(pdbid):
                     cmd.select("test_select", pymol_selection)
                     cmd.create(objectName, "test_select")
 
-            for chain in chain_dict:
-                logging.info(chain)
-                c_select = "chain %s and %s" % (chain_dict[chain]['chain'], pdbid)
-
-                entity_id = chain_dict[chain]['entity_id']
-                length = None
-                for entity in stored.molecule_dict[pdbid]:
-                    if entity_id == entity['entity_id']:
-                        length = entity['length']
-                display_type = poly_display_type(chain, 'polypeptide', length)
-                cmd.show(display_type, c_select)
-                cmd.color("grey", c_select)
             num = 1
             # logging.debug(obj_dict)
             for obj in obj_dict:
@@ -1115,10 +1100,13 @@ pymol.cmd.extend("count_chain", count_chain)
 def usage():
     usage = """
         Usage
-            pymol PDB_plugin.py mmCIF_file_name
+            pymol -r PDB_plugin.py -- mmCIF_file=MY_CIF_FILE.cif
+            or 
+            pymol -r PDB_plugin.py -- PDBID
         """
-    logging.info((usage))
+    logging.info(usage)
     # pymol.cmd.quit()
+
 
 
 if __name__ == '__main__':
@@ -1137,4 +1125,6 @@ if __name__ == '__main__':
             logging.info('mmCIF file: %s' % mmCIF_file)
             PDBe_startup(pdbid, 'all', mmCIF_file=mmCIF_file)
         else:
-            logging.info("Please provide a pdbid or mmCIF_file=FILE after -- ")
+            logging.info(usage())
+else:
+    logging.info(usage())
